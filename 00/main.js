@@ -22,7 +22,7 @@ const material = new THREE.MeshBasicMaterial({ color: 0x5A6A68, side: THREE.Doub
 // Create a mesh using the geometry and material
 const mesh = new THREE.Mesh(geometry, material);
 
-// render object
+// Render object
 scene.add(mesh);
 renderer = new THREE.WebGLRenderer({
     antialias: true
