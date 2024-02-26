@@ -18,7 +18,11 @@ const v3 = new THREE.Vector3(3, 3, 0);
 var geometry = new THREE.BufferGeometry().setFromPoints([v1, v2, v3]);
 
 // Create a basic material with a specified color
-const material = new THREE.MeshBasicMaterial({ color: 0x5A6A68, side: THREE.DoubleSide });
+/**
+ * Culling is on by default, in other words "side" is set to THREE.FrontSide.
+ * The other settings are THREE.DoubleSide and THREE.BackSide
+ */
+const material = new THREE.MeshBasicMaterial({ color: 0x5A6A68, side: THREE.FrontSide });
 // Create a mesh using the geometry and material
 const mesh = new THREE.Mesh(geometry, material);
 
