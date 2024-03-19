@@ -1,4 +1,4 @@
-### Project: Interactive 3D Graphics Course Homework
+# Project: Interactive 3D Graphics Course Homework
 
 ## Description
 
