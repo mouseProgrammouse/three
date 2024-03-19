@@ -1,7 +1,5 @@
 # Project: Interactive 3D Graphics Course Homework
 
-## Description
-
 This repository contains practical examples for tasks in the "Interactive 3D Graphics" Udacity course.
 The course covers essential concepts like 3D graphics principles, including meshes, transforms, lighting, 
 animation, and building interactive 3D applications that smoothly run in web browsers.
@@ -21,10 +19,6 @@ To run the project, follow these steps:
 
 
 4. Open `localhost:8080` in a web browser to view the project.
-
-### Notes
-
-Make sure you have Node.js installed on your system before installing live-server. This project utilizes npm as a bundler for managing dependencies and running the live-server.
 
 ### Course Information
 
