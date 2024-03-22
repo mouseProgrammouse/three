@@ -10,7 +10,7 @@ let camera, scene, renderer;
 const { innerWidth: width, innerHeight: height } = window;
 
 // Define the camera with perspective projection
-camera = new THREE.PerspectiveCamera(70, width / height, 0.01, 0);
+camera = new THREE.PerspectiveCamera(20, width / height, 0.01, 0);
 camera.position.z = 10;
 
 // Function to generate polygon geometry based on the number of sides
