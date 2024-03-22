@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../node_modules/modern-normalize/modern-normalize.css">
+    <link rel="stylesheet" href="../node_modules/purecss/build/pure-min.css">
+    <link rel="stylesheet" href="styles.css">
+    <title>Polygon with Three.js app</title>
+</head>
+
+<body>
+    <div class="content">
+        <form class="pure-form">
+            <fieldset>
+                <legend>Set the Number of Sides for the Polygon</legend>
+                <label for="sideAmount">Amount of Sides:</label>
+                <input id="sideAmount" type="number" value="3" min="3" max="60" />
+                <button id="submitSides" type="submit" class="pure-button pure-button-primary">Draw Polygon</button>
+            </fieldset>
+        </form>
+    </div>
+    <script type="module" src="main.js"></script>
+</body>
+
+</html>
