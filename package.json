@@ -10,8 +10,7 @@
         "type": "git",
         "url": "git+https://github.com/mouseProgrammouse/three.git"
     },
-    "author": "",
-    "license": "ISC",
+    "author": "Alena Timofeeva",
     "bugs": {
         "url": "https://github.com/mouseProgrammouse/three/issues"
     },
@@ -20,5 +19,6 @@
         "modern-normalize": "^2.0.0",
         "purecss": "^3.0.0",
         "three": "^0.162.0"
-    }
+    },
+    "type": "module"
 }
