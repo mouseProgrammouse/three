@@ -16,6 +16,7 @@
     },
     "homepage": "https://github.com/mouseProgrammouse/three#readme",
     "dependencies": {
+        "dat.gui": "^0.7.9",
         "modern-normalize": "^2.0.0",
         "purecss": "^3.0.0",
         "three": "^0.162.0"
