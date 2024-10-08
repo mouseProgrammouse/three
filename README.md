@@ -1,5 +1,5 @@
 <style>
-.teapot{
+.teapot {
    width: 100%
 
 }
