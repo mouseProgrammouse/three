@@ -1,8 +1,5 @@
-<style>
-.teapot { width: 100%}
-</style>
 
-<img src="./teapot.png" class="teapot"/>
+<img src="./teapot.png" style="width:100%"/>
 
 # Interactive 3D Graphics Course Homework
 
