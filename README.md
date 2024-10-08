@@ -1,8 +1,5 @@
 <style>
-.teapot {
-   width: 100%
-
-}
+.teapot { width: 100%}
 </style>
 
 <img src="./teapot.png" class="teapot"/>
