@@ -1,11 +1,4 @@
-<style>
-.teapot{
-   width: 100%
-
-}
-</style>
-
-<img src="./teapot.png" class="teapot"/>
+<img src="./assets/teapot.png"/>
 
 # Interactive 3D Graphics Course Homework
 
@@ -37,6 +30,7 @@ nvm use
 ```
 npm install -g live-server
 ```
+
 
 ## Usage
 
