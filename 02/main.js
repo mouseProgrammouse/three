@@ -18,20 +18,13 @@ scene = new THREE.Scene();
 
 // Add a simple geometry and material
 const geometry = new THREE.BoxGeometry();
-const material = new THREE.MeshBasicMaterial({ 
-    color: 0x00ff00,
-    transparent: true,  // Enable transparency
-    opacity: 0.5        // Set opacity (0 = fully transparent, 1 = fully opaque)
-    });
 var wireframeMaterial = new THREE.MeshBasicMaterial({ wireframe: true });
 const cube = new THREE.Mesh(geometry, wireframeMaterial);
 
 scene.add(cube);
 
-
 // Set the size of the renderer to match the window size
 renderer.setSize(width, height);
-
 
 // Grid helpers
 const gridHelper = new THREE.GridHelper(10, 10);
@@ -69,14 +62,13 @@ scaleFolder.add(cube.scale, 'y', 0, 3);
 scaleFolder.add(cube.scale, 'z', 0, 3);
 scaleFolder.open();
 
-
 document.body.appendChild(renderer.domElement);
 
 // Animation loop
 const animate = function () {
-    requestAnimationFrame(animate);
+  requestAnimationFrame(animate);
 
-    renderer.render(scene, camera);
+  renderer.render(scene, camera);
 };
 
 animate();
