@@ -1,4 +1,7 @@
-import * as THREE from '../node_modules/three/build/three.module.js';
+import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { addGridAndAxesHelpers } from '../common/helpers.js';
+import { MAIN_COLOR } from '../common/constants.js';
 
 let camera, scene, renderer;
 const { innerWidth: width, innerHeight: height } = window;
@@ -15,53 +18,49 @@ camera.position.x = 0;
 // Create a new scene
 scene = new THREE.Scene();
 
-const stairHeight = 1, stairWidth = 4, stairDepth = 0.2;
+const stairHeight = 1,
+  stairWidth = 4,
+  stairDepth = 0.2;
+
 const createStairSegment = (scene) => {
-    // Add a simple geometry and material
-    const topOfStairGeometry = new THREE.BoxGeometry(stairWidth, stairDepth, stairHeight);
-    const frontOfStairGeometry = new THREE.BoxGeometry(stairWidth, stairHeight, stairDepth);
+  // Add a simple geometry and material
+  const topOfStairGeometry = new THREE.BoxGeometry(
+    stairWidth,
+    stairDepth,
+    stairHeight
+  );
+  const frontOfStairGeometry = new THREE.BoxGeometry(
+    stairWidth,
+    stairHeight,
+    stairDepth
+  );
 
-    const material = new THREE.MeshBasicMaterial({ 
-        color: 0xffbe98,
-        transparent: true,  // Enable transparency
-        opacity: 0.5        // Set opacity (0 = fully transparent, 1 = fully opaque)
-        });
-    var wireframeMaterial = new THREE.MeshBasicMaterial({ wireframe: true });
+  const material = new THREE.MeshBasicMaterial({
+    color: MAIN_COLOR,
+    transparent: true, // Enable transparency
+    opacity: 0.7, // Set opacity (0 = fully transparent, 1 = fully opaque)
+  });
+  var wireframeMaterial = new THREE.MeshBasicMaterial({ wireframe: true });
 
-    const topOfStair = new THREE.Mesh(topOfStairGeometry, wireframeMaterial);
-    const frontOfStair = new THREE.Mesh(frontOfStairGeometry, material);
+  const topOfStair = new THREE.Mesh(topOfStairGeometry, wireframeMaterial);
+  const frontOfStair = new THREE.Mesh(frontOfStairGeometry, material);
 
-    scene.add(topOfStair);
-    scene.add(frontOfStair);
-}
+  topOfStair.position.y = stairHeight + stairDepth / 2;
+  topOfStair.position.z = stairWidth / 2 - stairDepth / 2;
+
+  frontOfStair.position.y = stairHeight / 2;
 
 
-
+  scene.add(topOfStair);
+  scene.add(frontOfStair);
+};
 // Set the size of the renderer to match the window size
 renderer.setSize(width, height);
 createStairSegment(scene);
 
+const controls = new OrbitControls( camera, renderer.domElement );
 
-
-// Grid helpers
-const gridHelper = new THREE.GridHelper(10, 10);
-scene.add(gridHelper);
-
-// CameraHelper: Visualizes the frustum of a camera.
-const helper = new THREE.CameraHelper(camera);
-scene.add(helper);
-
-// Add an AxesHelper
-const axesHelper = new THREE.AxesHelper(5); // The parameter sets the size of the axes
-scene.add(axesHelper);
-
+addGridAndAxesHelpers(scene, camera, THREE);
 document.body.appendChild(renderer.domElement);
 
-// Animation loop
-const animate = function () {
-    requestAnimationFrame(animate);
-
-    renderer.render(scene, camera);
-};
-
-animate();
+renderer.render(scene, camera);
