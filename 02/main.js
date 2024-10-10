@@ -1,5 +1,6 @@
-import * as THREE from '../node_modules/three/build/three.module.js';
-import * as dat from '../node_modules/dat.gui/build/dat.gui.module.js';
+import * as THREE from 'three';
+import * as dat from 'dat.gui';
+import { MAIN_COLOR } from '../common/constants.js';
 
 let camera, scene, renderer;
 const { innerWidth: width, innerHeight: height } = window;
@@ -19,19 +20,16 @@ scene = new THREE.Scene();
 // Add a simple geometry and material
 const geometry = new THREE.BoxGeometry();
 const material = new THREE.MeshBasicMaterial({ 
-    color: 0x00ff00,
+    color: MAIN_COLOR,
     transparent: true,  // Enable transparency
-    opacity: 0.5        // Set opacity (0 = fully transparent, 1 = fully opaque)
+    opacity: 0.7        // Set opacity (0 = fully transparent, 1 = fully opaque)
     });
-var wireframeMaterial = new THREE.MeshBasicMaterial({ wireframe: true });
-const cube = new THREE.Mesh(geometry, wireframeMaterial);
+const cube = new THREE.Mesh(geometry, material);
 
 scene.add(cube);
 
-
 // Set the size of the renderer to match the window size
 renderer.setSize(width, height);
-
 
 // Grid helpers
 const gridHelper = new THREE.GridHelper(10, 10);
@@ -69,13 +67,25 @@ scaleFolder.add(cube.scale, 'y', 0, 3);
 scaleFolder.add(cube.scale, 'z', 0, 3);
 scaleFolder.open();
 
+// Add toggle for the switcing between mesh and material
+const debugParams = {
+    showWireframe: false
+  };
+  
+  gui.add(debugParams, 'showWireframe').name('Show Wireframe').onChange(() => {
+    // Toggle wireframe on/off for all objects in the scene
+    scene.traverse((child) => {
+      if (child.isMesh) {
+        child.material.wireframe = debugParams.showWireframe;
+      }
+    });
+  });
 
 document.body.appendChild(renderer.domElement);
 
 // Animation loop
 const animate = function () {
     requestAnimationFrame(animate);
-
     renderer.render(scene, camera);
 };
 
