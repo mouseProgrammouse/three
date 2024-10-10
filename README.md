@@ -27,10 +27,6 @@ source  ~/.zshrc
 nvm use
 ```
 
-4. This project uses live-server to serve files and enable live reloading during development. Install live-server globally using npm:
-```
-npm install -g live-server
-```
 
 ## Usage
 
@@ -41,13 +37,21 @@ To run the project, follow these steps:
 npm install
 ```
 
-2. Start the server using live-server:
-```
-live-server
-```
+2. To bundle all the projects and start the development server with Rollup, use:
 
+```
+npm run start
 
-3. Open `localhost:8080` in a web browser to view the project.
+```
+This will bundle your code using Rollup, start the development server, and enable live reloading for any changes.
+
+3.  To bundle and serve a specific project (e.g., 01), use:
+```
+npm run dev page:01
+```
+This command will bundle and serve only the specified project (in this case, page 01), allowing you to focus on a particular project while still benefiting from live reloading.
+
+4. Open `localhost:8080` in a web browser to view the project.
 
 ### Course Information
 

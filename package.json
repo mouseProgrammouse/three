@@ -4,7 +4,8 @@
     "description": "Homework for the three.js course on Udacity.",
     "main": "index.js",
     "scripts": {
-        "dev": "npx rollup -c --watch"
+        "dev": "npx rollup -c --watch",
+        "dev page:": "npx rollup -c --watch --page:"
     },
     "repository": {
         "type": "git",

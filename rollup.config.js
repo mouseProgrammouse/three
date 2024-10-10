@@ -10,6 +10,12 @@ import path from 'path';
 const inputDir = '.'; // Root project directory
 const outputDir = 'dist';
 
+const args = process.argv;
+let pageArg = args.find(arg => arg.startsWith('page:'));
+if (pageArg) {
+  pageArg = pageArg.split(':')[1];
+}
+
 // get all subdirectories (00, 01, etc.)
 const getDirectories = (source) =>
   fs
@@ -21,7 +27,7 @@ const getDirectories = (source) =>
 const pages = getDirectories(inputDir);
 
 // Create a Rollup config for each page
-const rollupConfigs = pages.map((page) => {
+const rollupConfigs = (pageArg ? [pageArg] : pages).map((page) => {
   return {
     input: path.join(inputDir, page, 'main.js'),
     output: {
@@ -35,8 +41,8 @@ const rollupConfigs = pages.map((page) => {
       babel({ babelHelpers: 'bundled' }),
       terser(),
       serve({
-        open: page === pages[pages.length - 1], // Only open the browser for the '00' page
-        contentBase: inputDir, // Serve the correct dist folder for each page
+        open: page === pages[pages.length - 1],
+        contentBase: inputDir,
         port: 8080,
       }),
       livereload({
