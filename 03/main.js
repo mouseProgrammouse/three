@@ -10,7 +10,7 @@ const { innerWidth: width, innerHeight: height } = window;
 renderer = new THREE.WebGLRenderer();
 
 // Define the camera with perspective projection
-camera = new THREE.PerspectiveCamera(70, width / height, 0.01, 15);
+camera = new THREE.PerspectiveCamera(70, width / height, 1, 1000);
 camera.position.z = 12;
 camera.position.y = 4;
 camera.position.x = 0;
@@ -50,7 +50,6 @@ const createStairSegment = (scene) => {
 
   frontOfStair.position.y = stairHeight / 2;
 
-
   scene.add(topOfStair);
   scene.add(frontOfStair);
 };
@@ -58,9 +57,17 @@ const createStairSegment = (scene) => {
 renderer.setSize(width, height);
 createStairSegment(scene);
 
-const controls = new OrbitControls( camera, renderer.domElement );
-
 addGridAndAxesHelpers(scene, camera, THREE);
 document.body.appendChild(renderer.domElement);
 
-renderer.render(scene, camera);
+// Create the OrbitControls
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 0, 0); // Set the target of the controls to the center of the cube
+controls.update();
+
+const animate = () => {
+  requestAnimationFrame(animate);
+  renderer.render(scene, camera);
+};
+
+animate();
