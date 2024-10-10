@@ -1,5 +1,5 @@
 
-<img src="./teapot.png" style="width:100%"/>
+<img src="./assets//teapot.png" style="width:100%"/>
 
 # Interactive 3D Graphics Course Homework
 
@@ -40,8 +40,7 @@ npm install
 2. To bundle all the projects and start the development server with Rollup, use:
 
 ```
-npm run start
-
+npm run dev
 ```
 This will bundle your code using Rollup, start the development server, and enable live reloading for any changes.
 
