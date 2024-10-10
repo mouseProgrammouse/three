@@ -4,7 +4,7 @@
     "description": "Homework for the three.js course on Udacity.",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "dev": "npx rollup -c --watch"
     },
     "repository": {
         "type": "git",

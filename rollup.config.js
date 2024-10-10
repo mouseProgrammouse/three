@@ -1,16 +1,16 @@
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-// import { terser } from '@rollup/plugin-terser';
 import babel from '@rollup/plugin-babel';
 import terser from '@rollup/plugin-terser';
-
+import livereload from 'rollup-plugin-livereload';
+import serve from 'rollup-plugin-serve';
 import fs from 'fs';
 import path from 'path';
 
 const inputDir = '.'; // Root project directory
 const outputDir = 'dist';
 
-// Function to get all subdirectories (00, 01, etc.)
+// get all subdirectories (00, 01, etc.)
 const getDirectories = (source) =>
   fs
     .readdirSync(source, { withFileTypes: true })
@@ -34,6 +34,14 @@ const rollupConfigs = pages.map((page) => {
       commonjs(),
       babel({ babelHelpers: 'bundled' }),
       terser(),
+      serve({
+        open: page === pages[pages.length - 1], // Only open the browser for the '00' page
+        contentBase: inputDir, // Serve the correct dist folder for each page
+        port: 8080,
+      }),
+      livereload({
+        watch: pages.map(_page => path.join(_page, outputDir)), // Watch all dist directories
+      })
     ],
   };
 });
