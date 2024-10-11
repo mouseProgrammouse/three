@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { addGridAndAxesHelpers } from '../common/helpers.js';
-import { MAIN_COLOR } from '../common/constants.js';
 
 let camera, scene, renderer;
 const { innerWidth: width, innerHeight: height } = window;
@@ -63,28 +62,29 @@ const animate = () => {
 };
 
 const initForm = () => {
-  document.getElementById("submitStairsAmount").addEventListener("click", (event) => {
-  // Prevent the default form submission behavior
-  event.preventDefault();
+  document
+    .getElementById('submitStairsAmount')
+    .addEventListener('click', (event) => {
+      // Prevent the default form submission behavior
+      event.preventDefault();
 
-  // Get the number of sides from the input field
-  const amountOfStairs = document.getElementById("stairsAmount").value;
-  clearScene();
-  addGridAndAxesHelpers(scene, camera, THREE);
-  for (let i = 0; i < amountOfStairs; i++) {
-    createStairSegment(scene, 0, stairHeight * i, stairHeight * i);
-  }
-  addOrbitControlls();
-  })
-}
+      // Get the number of sides from the input field
+      const amountOfStairs = document.getElementById('stairsAmount').value;
+      clearScene();
+      addGridAndAxesHelpers(scene, camera, THREE);
+      for (let i = 0; i < amountOfStairs; i++) {
+        createStairSegment(scene, 0, stairHeight * i, stairHeight * i);
+      }
+      addOrbitControlls();
+    });
+};
 
-  // Function to clear the scene
+// Function to clear the scene
 const clearScene = () => {
   while (scene.children.length > 0) {
-      scene.remove(scene.children[0]);
+    scene.remove(scene.children[0]);
   }
-}
-
+};
 
 // Set the size of the renderer to match the window size
 renderer.setSize(width, height);

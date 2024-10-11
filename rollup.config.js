@@ -11,7 +11,7 @@ const inputDir = '.'; // Root project directory
 const outputDir = 'dist';
 
 const args = process.argv;
-let pageArg = args.find(arg => arg.startsWith('page:'));
+let pageArg = args.find((arg) => arg.startsWith('page:'));
 if (pageArg) {
   pageArg = pageArg.split(':')[1];
 }
@@ -46,8 +46,8 @@ const rollupConfigs = (pageArg ? [pageArg] : pages).map((page) => {
         port: 8080,
       }),
       livereload({
-        watch: pages.map(_page => path.join(_page, outputDir)), // Watch all dist directories
-      })
+        watch: pages.map((_page) => path.join(_page, outputDir)), // Watch all dist directories
+      }),
     ],
   };
 });

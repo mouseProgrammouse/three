@@ -19,11 +19,11 @@ scene = new THREE.Scene();
 
 // Add a simple geometry and material
 const geometry = new THREE.BoxGeometry();
-const material = new THREE.MeshBasicMaterial({ 
-    color: MAIN_COLOR,
-    transparent: true,  // Enable transparency
-    opacity: 0.7        // Set opacity (0 = fully transparent, 1 = fully opaque)
-    });
+const material = new THREE.MeshBasicMaterial({
+  color: MAIN_COLOR,
+  transparent: true, // Enable transparency
+  opacity: 0.7, // Set opacity (0 = fully transparent, 1 = fully opaque)
+});
 const cube = new THREE.Mesh(geometry, material);
 
 scene.add(cube);
@@ -69,10 +69,13 @@ scaleFolder.open();
 
 // Add toggle for the switcing between mesh and material
 const debugParams = {
-    showWireframe: false
-  };
-  
-  gui.add(debugParams, 'showWireframe').name('Show Wireframe').onChange(() => {
+  showWireframe: false,
+};
+
+gui
+  .add(debugParams, 'showWireframe')
+  .name('Show Wireframe')
+  .onChange(() => {
     // Toggle wireframe on/off for all objects in the scene
     scene.traverse((child) => {
       if (child.isMesh) {
@@ -85,8 +88,8 @@ document.body.appendChild(renderer.domElement);
 
 // Animation loop
 const animate = function () {
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
+  requestAnimationFrame(animate);
+  renderer.render(scene, camera);
 };
 
 animate();

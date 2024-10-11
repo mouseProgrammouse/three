@@ -1,4 +1,4 @@
-export  const addGridAndAxesHelpers = (scene, camera, THREE) => {
+export const addGridAndAxesHelpers = (scene, camera, THREE) => {
   // Grid helpers
   const gridHelper = new THREE.GridHelper(10, 10);
   scene.add(gridHelper);
