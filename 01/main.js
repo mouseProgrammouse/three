@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { MAIN_COLOR } from '../common/constants';
 
 // Retrieve the default amount of sides from the input field
 const defaultAmountOfSides = document.getElementById("sideAmount").value;
@@ -88,7 +89,7 @@ const renderPolygon = (sides) => {
     const geometry = generatePolygon(sides);
 
     // Create a basic material with a specified color and front side rendering
-    const material = new THREE.MeshBasicMaterial({ color: 0x5A6A68, side: THREE.FrontSide });
+    const material = new THREE.MeshBasicMaterial({ color: MAIN_COLOR, side: THREE.FrontSide });
 
     // Create a mesh using the geometry and material
     const mesh = new THREE.Mesh(geometry, material);

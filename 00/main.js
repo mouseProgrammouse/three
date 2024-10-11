@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { MAIN_COLOR } from '../common/constants';
 
 let camera, scene, renderer;
 const { innerWidth: width, innerHeight: height } = window;
@@ -22,7 +23,7 @@ var geometry = new THREE.BufferGeometry().setFromPoints([v1, v2, v3]);
  * Culling is on by default, in other words "side" is set to THREE.FrontSide.
  * The other settings are THREE.DoubleSide and THREE.BackSide
  */
-const material = new THREE.MeshBasicMaterial({ color: 0x5A6A68, side: THREE.FrontSide });
+const material = new THREE.MeshBasicMaterial({ color: MAIN_COLOR, side: THREE.FrontSide });
 // Create a mesh using the geometry and material
 const mesh = new THREE.Mesh(geometry, material);
 
