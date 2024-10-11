@@ -23,20 +23,21 @@ var geometry = new THREE.BufferGeometry().setFromPoints([v1, v2, v3]);
  * Culling is on by default, in other words "side" is set to THREE.FrontSide.
  * The other settings are THREE.DoubleSide and THREE.BackSide
  */
-const material = new THREE.MeshBasicMaterial({ color: MAIN_COLOR, side: THREE.FrontSide });
+const material = new THREE.MeshBasicMaterial({
+  color: MAIN_COLOR,
+  side: THREE.FrontSide,
+});
 // Create a mesh using the geometry and material
 const mesh = new THREE.Mesh(geometry, material);
 
 // Render object
 scene.add(mesh);
 renderer = new THREE.WebGLRenderer({
-    antialias: true
+  antialias: true,
 });
-
 
 // Set the size of the renderer to match the window size
 renderer.setSize(width, height);
-
 
 document.body.appendChild(renderer.domElement);
 renderer.render(scene, camera);
