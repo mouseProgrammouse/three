@@ -5,91 +5,102 @@ import { MAIN_COLOR } from '../common/constants.js';
 let camera, scene, renderer;
 const { innerWidth: width, innerHeight: height } = window;
 
-// Create a renderer
-renderer = new THREE.WebGLRenderer();
+// Initialize scene, camera, and renderer
+const initScene = () => {
+  // Create a new scene
+  scene = new THREE.Scene();
 
-// Define the camera with perspective projection
-camera = new THREE.PerspectiveCamera(70, width / height, 0.01, 15);
-camera.position.z = 10;
-camera.position.y = 2;
-camera.position.x = 0;
+  // Setup camera with perspective projection
+  camera = new THREE.PerspectiveCamera(70, width / height, 0.01, 15);
+  camera.position.set(0, 2, 10);
 
-// Create a new scene
-scene = new THREE.Scene();
-
-// Add a simple geometry and material
-const geometry = new THREE.BoxGeometry();
-const material = new THREE.MeshBasicMaterial({
-  color: MAIN_COLOR,
-  transparent: true, // Enable transparency
-  opacity: 0.7, // Set opacity (0 = fully transparent, 1 = fully opaque)
-});
-const cube = new THREE.Mesh(geometry, material);
-
-scene.add(cube);
-
-// Set the size of the renderer to match the window size
-renderer.setSize(width, height);
-
-// Grid helpers
-const gridHelper = new THREE.GridHelper(10, 10);
-scene.add(gridHelper);
-
-// CameraHelper: Visualizes the frustum of a camera.
-const helper = new THREE.CameraHelper(camera);
-scene.add(helper);
-
-// Add an AxesHelper
-const axesHelper = new THREE.AxesHelper(5); // The parameter sets the size of the axes
-scene.add(axesHelper);
-
-// Create a dat.GUI instance
-const gui = new dat.GUI();
-
-// Add a rotation folder
-const rotationFolder = gui.addFolder('Rotation');
-rotationFolder.add(cube.rotation, 'x', 0, Math.PI * 2);
-rotationFolder.add(cube.rotation, 'y', 0, Math.PI * 2);
-rotationFolder.add(cube.rotation, 'z', 0, Math.PI * 2);
-rotationFolder.open();
-
-// Add a position folder
-const positionFolder = gui.addFolder('Position');
-positionFolder.add(cube.position, 'x', -10, 10);
-positionFolder.add(cube.position, 'y', -10, 10);
-positionFolder.add(cube.position, 'z', -10, 10);
-positionFolder.open();
-
-// Add a scale folder
-const scaleFolder = gui.addFolder('Scale');
-scaleFolder.add(cube.scale, 'x', 0, 3);
-scaleFolder.add(cube.scale, 'y', 0, 3);
-scaleFolder.add(cube.scale, 'z', 0, 3);
-scaleFolder.open();
-
-// Add toggle for the switcing between mesh and material
-const debugParams = {
-  showWireframe: false,
+  // Create and configure the renderer
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(width, height);
+  document.body.appendChild(renderer.domElement);
 };
 
-gui
-  .add(debugParams, 'showWireframe')
-  .name('Show Wireframe')
-  .onChange(() => {
-    // Toggle wireframe on/off for all objects in the scene
-    scene.traverse((child) => {
-      if (child.isMesh) {
-        child.material.wireframe = debugParams.showWireframe;
-      }
-    });
+// Create and add a cube with basic material
+const createCube = () => {
+  const geometry = new THREE.BoxGeometry();
+  const material = new THREE.MeshBasicMaterial({
+    color: MAIN_COLOR,
+    transparent: true,
+    opacity: 0.7,
   });
+  const cube = new THREE.Mesh(geometry, material);
+  scene.add(cube);
+  return cube;
+};
 
-document.body.appendChild(renderer.domElement);
+// Add helpers to the scene
+const addHelpers = () => {
+  // Grid helper
+  const gridHelper = new THREE.GridHelper(10, 10);
+  scene.add(gridHelper);
+
+  // Camera helper: Visualizes the frustum of a camera
+  const cameraHelper = new THREE.CameraHelper(camera);
+  scene.add(cameraHelper);
+
+  // Axes helper: Helps visualize the 3D axes (x, y, z)
+  const axesHelper = new THREE.AxesHelper(5);
+  scene.add(axesHelper);
+};
+
+// Setup dat.GUI for real-time controls
+const setupGUI = (cube) => {
+  const gui = new dat.GUI();
+
+  // Rotation controls
+  const rotationFolder = gui.addFolder('Rotation');
+  rotationFolder.add(cube.rotation, 'x', 0, Math.PI * 2);
+  rotationFolder.add(cube.rotation, 'y', 0, Math.PI * 2);
+  rotationFolder.add(cube.rotation, 'z', 0, Math.PI * 2);
+  rotationFolder.open();
+
+  // Position controls
+  const positionFolder = gui.addFolder('Position');
+  positionFolder.add(cube.position, 'x', -10, 10);
+  positionFolder.add(cube.position, 'y', -10, 10);
+  positionFolder.add(cube.position, 'z', -10, 10);
+  positionFolder.open();
+
+  // Scale controls
+  const scaleFolder = gui.addFolder('Scale');
+  scaleFolder.add(cube.scale, 'x', 0, 3);
+  scaleFolder.add(cube.scale, 'y', 0, 3);
+  scaleFolder.add(cube.scale, 'z', 0, 3);
+  scaleFolder.open();
+
+  // Toggle wireframe mode
+  const debugParams = { showWireframe: false };
+  gui
+    .add(debugParams, 'showWireframe')
+    .name('Show Wireframe')
+    .onChange(() => {
+      scene.traverse((child) => {
+        if (child.isMesh) {
+          child.material.wireframe = debugParams.showWireframe;
+        }
+      });
+    });
+};
 
 // Animation loop
-const animate = function () {
+const animate = () => {
   requestAnimationFrame(animate);
   renderer.render(scene, camera);
 };
 
-animate();
+// Initialize everything
+const init = () => {
+  initScene();
+  const cube = createCube();
+  addHelpers();
+  setupGUI(cube);
+  animate();
+};
+
+// Start the application
+init();
