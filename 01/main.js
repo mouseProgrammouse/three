@@ -6,36 +6,41 @@ const defaultAmountOfSides = document.getElementById('sideAmount').value;
 
 // Declare variables for camera, scene, and renderer
 let camera, scene, renderer;
-
-// Get the inner width and height of the window
 const { innerWidth: width, innerHeight: height } = window;
 
-// Define the camera with perspective projection
-camera = new THREE.PerspectiveCamera(70, width / height, 0.01, 0);
-camera.position.z = 10;
+// Initialize the scene, camera, and renderer
+const initScene = () => {
+  scene = new THREE.Scene();
 
-// Function to generate polygon geometry based on the number of sides
+  // Setup camera with perspective projection
+  camera = new THREE.PerspectiveCamera(70, width / height, 0.01, 15);
+  camera.position.z = 10;
+
+  // Create and configure the WebGL renderer
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(width, height);
+  document.body.appendChild(renderer.domElement);
+
+  // Render the initial scene
+  renderer.render(scene, camera);
+};
+
+// Generate polygon geometry based on the number of sides
 const generatePolygon = (sides) => {
   const geometry = new THREE.BufferGeometry();
   const sidePoints = [];
 
   // Generate points for each side of the polygon
   for (let i = 0; i < sides; i++) {
-    // Calculate the angle for each vertex
     const angle = Math.PI / 2 + (i / sides) * 2 * Math.PI;
-
-    // Calculate the x and y coordinates for the vertex
     const x = Math.cos(angle).toFixed(2);
     const y = Math.sin(angle).toFixed(2);
-
-    // Save the vertex location
     sidePoints.push({ x, y });
   }
 
   // Generate vertices for triangles composing the polygon
   let triangles = [];
   for (let i = 0; i < sidePoints.length - 1; i++) {
-    // Add points for the triangle
     triangles.push(
       sidePoints[i].x,
       sidePoints[i].y,
@@ -49,7 +54,7 @@ const generatePolygon = (sides) => {
     );
   }
 
-  // Duplicate the top left and bottom right vertices to close the polygon
+  // Close the polygon by connecting the last point to the first
   triangles.push(
     0,
     0,
@@ -69,63 +74,41 @@ const generatePolygon = (sides) => {
   return geometry;
 };
 
-// Function to initialize the scene
-const initScene = () => {
-  // Create a new scene
-  scene = new THREE.Scene();
-
-  // Create a WebGL renderer with antialiasing enabled
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-
-  // Set the size of the renderer to match the window size
-  renderer.setSize(width, height);
-
-  // Append renderer's DOM element to the document body
-  document.body.appendChild(renderer.domElement);
-
-  // Render the scene with the camera
-  renderer.render(scene, camera);
-};
-
-// Function to render the polygon with the specified number of sides
+// Render the polygon with the specified number of sides
 const renderPolygon = (sides) => {
-  // Generate geometry for a polygon
+  // Generate polygon geometry
   const geometry = generatePolygon(sides);
 
-  // Create a basic material with a specified color and front side rendering
+  // Create material with specified color
   const material = new THREE.MeshBasicMaterial({
     color: MAIN_COLOR,
     side: THREE.FrontSide,
   });
 
-  // Create a mesh using the geometry and material
+  // Create mesh and add it to the scene
   const mesh = new THREE.Mesh(geometry, material);
-
-  // Add the mesh to the scene
   scene.add(mesh);
 
-  // Render the scene with the camera
+  // Render the scene
   renderer.render(scene, camera);
 };
 
-// Function to clear the scene
+// Clear the scene by removing all child objects
 const clearScene = () => {
   while (scene.children.length > 0) {
     scene.remove(scene.children[0]);
   }
 };
 
-// Function to initialize the form and handle form submission
+// Initialize form and handle user input
 const initForm = () => {
-  // Add event listener to the submit button
   document.getElementById('submitSides').addEventListener('click', (event) => {
-    // Prevent the default form submission behavior
     event.preventDefault();
 
     // Get the number of sides from the input field
     const sides = document.getElementById('sideAmount').value;
 
-    // If the number of sides is valid (at least 3), clear the scene and render the polygon
+    // If valid, clear the scene and render the polygon
     if (sides >= 3) {
       clearScene();
       renderPolygon(sides);
@@ -133,7 +116,12 @@ const initForm = () => {
   });
 };
 
-// Initialize the scene, form, and render the polygon with the default number of sides
-initScene();
-initForm();
-renderPolygon(defaultAmountOfSides);
+// Initialize everything and render the polygon with default sides
+const init = () => {
+  initScene();
+  initForm();
+  renderPolygon(defaultAmountOfSides);
+};
+
+// Start the application
+init();
