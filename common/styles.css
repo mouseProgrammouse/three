@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+h1,
+h2,
+h3,
+h4,
+h5,
+a,
+.h3 {
+  font-family: 'Roboto Mono', monospace;
+}
+
+body {
+  margin: 0;
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.content {
+  margin-left: 240px;
+  padding-top: 40px;
+  padding-left: 20px;
+  border-left: 2px solid #000;
+  height: 100vh;
+  margin-top: -108px;
+  padding-top: 108px;
+}
+
+h2 {
+  font-size: 64px;
+  font-weight: 700;
+}
+
+.content h2 {
+  margin-bottom: 16px;
+}
+
+.hero .divider,
+.content .divider {
+  max-width: 1160px;
+  display: block;
+  border-bottom: 2px solid #000;
+  position: relative;
+  top: 0;
+  left: -90px;
+}
+
+.content .topic-description {
+  position: relative;
+  top: -120px;
+}
+
+a {
+  font-weight: 700;
+  color: #000000;
+}
+
+a:hover {
+  color: #80b5a3;
+}
+
+.description {
+  max-width: 800px;
+}
+
+.topics {
+  list-style: none;
+}
+
+.topics li {
+  list-style: none;
+  margin-bottom: 8px;
+}
+
+h3,
+.h3 {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.counter {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 82px;
+  position: relative;
+  top: -2px;
+  left: -183px;
+  font-weight: 700;
+}
