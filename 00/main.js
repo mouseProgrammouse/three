@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { MAIN_COLOR } from '../common/constants';
+import { MAIN_COLOR, MAX_WIDTH } from '../common/constants';
 
 let camera, scene, renderer;
 const { innerWidth: width, innerHeight: height } = window;
@@ -15,8 +15,9 @@ const initScene = () => {
 
   // Create and configure the WebGL renderer
   renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(width, height);
-  document.body.appendChild(renderer.domElement);
+  const canvasWidth = width - 262;
+  renderer.setSize(canvasWidth > MAX_WIDTH ? MAX_WIDTH : canvasWidth, height - 400);
+  document.getElementById('example').appendChild(renderer.domElement);
 };
 
 // Create geometry and material for the triangle mesh
@@ -41,6 +42,8 @@ const createTriangle = () => {
 
   // Create a mesh using the geometry and material
   const mesh = new THREE.Mesh(geometry, material);
+  mesh.position.x = -1.5;
+  mesh.position.y = -1.5;
 
   // Add the mesh to the scene
   scene.add(mesh);
