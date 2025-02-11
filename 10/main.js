@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { addGridAndAxesHelpers } from '../common/helpers.js';
-import {SECONDARY_COLOR, DARKER_COLOR } from '../common/constants.js';
+import { SECONDARY_COLOR, DARKER_COLOR } from '../common/constants.js';
 import * as dat from 'dat.gui';
 
 let camera, scene, renderer;
@@ -19,17 +19,12 @@ const CHROME_MATERIAL_DARKER = new THREE.MeshPhysicalMaterial({
   roughness: 0.2,
 });
 
-
-
 // Initialize scene, camera, and renderer
 const initScene = () => {
   scene = new THREE.Scene();
-
-  // Setup camera with perspective projection
   camera = new THREE.PerspectiveCamera(70, width / height, 1, 1000);
   camera.position.set(6, 3, 4);
 
-  // Create and configure the renderer
   renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(width, height);
   document.body.appendChild(renderer.domElement);
@@ -69,96 +64,99 @@ const animate = () => {
   renderer.render(scene, camera);
 };
 
+// Creates a robotic segment with a base and joint
 const createSegment = () => {
-  const baseGeometry = new THREE.BoxGeometry(1, 2);
-  const base = new THREE.Mesh(baseGeometry, CHROME_MATERIAL);
-  base.position.set(0, 1, 0);
-  const jointGeometry = new THREE.SphereGeometry(0.75);
-  const joint = new THREE.Mesh(jointGeometry, CHROME_MATERIAL_DARKER);
-  joint.position.set(0, 2, 0);
-  return new THREE.Object3D().add(base).add(joint);
-}
+  const segment = new THREE.Object3D();
 
+  const base = new THREE.Mesh(new THREE.BoxGeometry(1, 2), CHROME_MATERIAL);
+  base.position.y = 1;
+  
+  const joint = new THREE.Mesh(new THREE.SphereGeometry(0.75), CHROME_MATERIAL_DARKER);
+  joint.position.y = 2;
+
+  segment.add(base);
+  segment.add(joint);
+
+  return segment;
+};
+
+// Creates a robotic hand structure
 const createHand = () => {
-  const geometry = new THREE.CylinderGeometry( 0.5, 0.5, 3, 32 ); 
-  const palm = new THREE.Mesh( geometry, CHROME_MATERIAL );
-  palm.position.set(0,2,0);
-  palm.rotateZ(Math.PI/2);
+  const palm = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 3, 32), CHROME_MATERIAL);
+  palm.position.y = 2;
+  palm.rotateZ(Math.PI / 2);
 
-
-  const baseGeometry = new THREE.BoxGeometry(1, 2, 0.1);
-  const rightSide = new THREE.Mesh(baseGeometry, CHROME_MATERIAL_DARKER);
+  const sideGeometry = new THREE.BoxGeometry(1, 2, 0.1);
+  const rightSide = new THREE.Mesh(sideGeometry, CHROME_MATERIAL_DARKER);
   rightSide.name = 'rightSide';
-  rightSide.rotateX(Math.PI/2);
-  rightSide.position.set(0,1.3,0.5);
+  rightSide.rotateX(Math.PI / 2);
+  rightSide.position.set(0, 1.3, 0.5);
 
-  const leftSide = new THREE.Mesh(baseGeometry, CHROME_MATERIAL_DARKER);
+  const leftSide = new THREE.Mesh(sideGeometry, CHROME_MATERIAL_DARKER);
   leftSide.name = 'leftSide';
-  leftSide.rotateX(Math.PI/2);
-  leftSide.position.set(0,-1.3,0.5);
+  leftSide.rotateX(Math.PI / 2);
+  leftSide.position.set(0, -1.3, 0.5);
 
-  palm.add(leftSide);
-  palm.add(rightSide);
-
+  palm.add(leftSide, rightSide);
   return palm;
-}
+};
 
 // Setup dat.GUI for real-time controls
 const setupGUI = (joint, palm) => {
-    const gui = new dat.GUI();
+  const gui = new dat.GUI();
+  const rightSide = palm.getObjectByName('rightSide');
+  const leftSide = palm.getObjectByName('leftSide');
 
-    // Rotation controls
-    const rotationFolder = gui.addFolder('Joint rotation');
-    rotationFolder.add(joint.rotation, 'x', 0, Math.PI / 1.5);
-    rotationFolder.add(joint.rotation, 'y', 0, Math.PI * 2);
-    rotationFolder.open();
+  const rotationFolder = gui.addFolder('Joint Rotation');
+  rotationFolder.add(joint.rotation, 'x', 0, Math.PI / 1.5);
+  rotationFolder.add(joint.rotation, 'y', 0, Math.PI * 2);
+  rotationFolder.open();
 
+  const armsControl = gui.addFolder('Arms');
+  const arms = {
+    get grip() {
+      return rightSide.position.y;
+    },
+    set grip(value) {
+      rightSide.position.y = value;
+      leftSide.position.y = -value;
+    },
+  };
+  armsControl.add(arms, 'grip', 0.7, 1.3);
+  armsControl.add(palm.rotation, 'x', -Math.PI / 2, 0);
+  armsControl.open();
+};
 
-    const armsControll = gui.addFolder('Arms');
-    const arms = {
-      get grip() {
-        return palm.getObjectByName('rightSide').position.y;
-      },
-      set grip(value) {
-        palm.getObjectByName('rightSide').position.y = value;
-        palm.getObjectByName('leftSide').position.y = -value; // Ensures symmetric movement
-      }
-    };
-    armsControll.add(arms, 'grip', 0.7, 1.3);
-
-    armsControll.add(palm.rotation, 'x', - Math.PI / 2, 0);
-    armsControll.open();
-}
-
+// Handle window resize
 const addEventListenerForResize = () => {
   window.addEventListener('resize', () => {
     const { innerWidth, innerHeight } = window;
     camera.aspect = innerWidth / innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(innerWidth, innerHeight);
-  });  
-}
+  });
+};
 
-// Initialize everything
+// Initialize the scene and robot arm
 const init = () => {
   initScene();
-  // draw robot
-  const segment = createSegment();
-  const handBase = createSegment();
-  handBase.position.set(0,2,0);
-  const palm = createHand();
-  handBase.add(palm);
-  handBase.rotateX(Math.PI/3);
-  setupGUI(handBase, palm);
-  scene.add(segment);
-  scene.add(handBase);
-  // -----
+
+  const baseSegment = createSegment();
+  const forearmSegment = createSegment();
+  forearmSegment.position.y = 2;
+
+  const hand = createHand();
+  forearmSegment.add(hand);
+  forearmSegment.rotateX(Math.PI / 3);
+
+  setupGUI(forearmSegment, hand);
+
+  scene.add(baseSegment, forearmSegment);
   addGridAndAxesHelpers(scene, camera, THREE);
   setupOrbitControls();
   addLight();
   animate();
 };
 
-// Start the application
 init();
 addEventListenerForResize();
